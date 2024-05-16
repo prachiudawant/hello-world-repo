@@ -1,0 +1,26 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build -t nginx:1.19.5-alpine .
+
+    - name: Run security checks
+      run: |
+        # Run security checks using your preferred tool
+        # Example: Trivy for vulnerability scanning
+        docker run --rm -v $(pwd):/src aquasec/trivy nginx-container:latest
+
+    - name: Run Echo
+      run: echo "Build successful"
